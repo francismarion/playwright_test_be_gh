@@ -1,12 +1,13 @@
-export function authHeader(token: string, type: 'raw' | 'bearer' | 'invalid') {
-  switch (type) {
-    case 'raw':
-      return { Authorization: token };
+export type AuthType = 'raw' | 'bearer' | 'invalid';
 
-    case 'bearer':
-      return { Authorization: `Bearer ${token}` };
+export function authHeader(token: string, type: AuthType) {
+  const prefixes = {
+    raw: '',
+    bearer: 'Bearer ',
+    invalid: 'Invalid ',
+  };
 
-    case 'invalid':
-      return { Authorization: `Invalid ${token}` };
-  }
+  return {
+    Authorization: `${prefixes[type]}${token}`,
+  };
 }

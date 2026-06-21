@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "test": "npx playwright test",
+    "test:report": "cmd /c \"npx playwright test & allure.cmd serve allure-results\""
+  },
   "devDependencies": {
     "@playwright/test": "^1.59.1",
     "@types/node": "^25.5.2",

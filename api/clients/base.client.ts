@@ -4,7 +4,7 @@ type RequestOptions = {
   headers?: Record<string, string>;
   params?: Record<string, string>;
   timeout?: number;
-  data?: any
+  data?: any;
 };
 
 export class BaseClient {
@@ -21,45 +21,79 @@ export class BaseClient {
   }
 
   private withAuth(options: RequestOptions = {}): RequestOptions {
-    if (!this.token) return options;
-
     return {
       ...options,
       headers: {
+        // default auth from setToken()
+        ...(this.token
+          ? { Authorization: `Bearer ${this.token}` }
+          : {}),
+
+        // custom headers override default auth
         ...(options.headers ?? {}),
-        Authorization: `Bearer ${this.token}`,
       },
     };
   }
 
-  async get(url: string, options: RequestOptions = {}): Promise<APIResponse> {
-    return this.request.get(url, this.withAuth(options));
+  async get(
+    url: string,
+    options: RequestOptions = {}
+  ): Promise<APIResponse> {
+    return this.request.get(
+      url,
+      this.withAuth(options)
+    );
   }
 
-  async post(url: string, payload?: any, options: RequestOptions = {}): Promise<APIResponse> {
-    return this.request.post(url, this.withAuth({
-      ...options,
-      data: payload,
-    
-    }));
+  async post(
+    url: string,
+    payload?: any,
+    options: RequestOptions = {}
+  ): Promise<APIResponse> {
+    return this.request.post(
+      url,
+      this.withAuth({
+        ...options,
+        data: payload,
+      })
+    );
   }
 
-  async put(url: string, payload?: any, options: RequestOptions = {}): Promise<APIResponse> {
-    return this.request.put(url, this.withAuth({
-      ...options,
-      data: payload,
-    }));
+  async put(
+    url: string,
+    payload?: any,
+    options: RequestOptions = {}
+  ): Promise<APIResponse> {
+    return this.request.put(
+      url,
+      this.withAuth({
+        ...options,
+        data: payload,
+      })
+    );
   }
 
-  async patch(url: string, payload?: any, options: RequestOptions = {}): Promise<APIResponse> {
-    return this.request.patch(url, this.withAuth({
-      ...options,
-      data: payload,
-    }));
+  async patch(
+    url: string,
+    payload?: any,
+    options: RequestOptions = {}
+  ): Promise<APIResponse> {
+    return this.request.patch(
+      url,
+      this.withAuth({
+        ...options,
+        data: payload,
+      })
+    );
   }
 
-  async delete(url: string, options: RequestOptions = {}): Promise<APIResponse> {
-    return this.request.delete(url, this.withAuth(options));
+  async delete(
+    url: string,
+    options: RequestOptions = {}
+  ): Promise<APIResponse> {
+    return this.request.delete(
+      url,
+      this.withAuth(options)
+    );
   }
-
 }
