@@ -3,6 +3,10 @@ import fs from 'fs';
 import { USERNAME, PASSWORD, API_BASE_URL } from './helpers/dotenv-loader';
 
 export default async function globalSetup() {
+  console.log('API_BASE_URL exists:', !!API_BASE_URL);
+  console.log('USERNAME exists:', !!USERNAME);
+  console.log('PASSWORD exists:', !!PASSWORD);
+
   const api = await request.newContext({
     baseURL: API_BASE_URL
   });
@@ -15,7 +19,12 @@ export default async function globalSetup() {
   });
 
   if (!res.ok()) {
-    throw new Error(`Login failed: ${res.status()} ${res.statusText()}`);
+    console.log('Status:', res.status());
+    console.log('Response:', await res.text());
+
+    throw new Error(
+      `Login failed: ${res.status()} ${res.statusText()}`
+    );
   }
 
   const body = await res.json();
