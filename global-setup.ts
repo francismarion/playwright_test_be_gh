@@ -1,10 +1,10 @@
 import { request } from '@playwright/test';
 import fs from 'fs';
-import { USERNAME, PASSWORD } from './helpers/dotenv-loader';
+import { USERNAME, PASSWORD, API_BASE_URL } from './helpers/dotenv-loader';
 
 export default async function globalSetup() {
   const api = await request.newContext({
-    baseURL: process.env.API_BASE_URL
+    baseURL: API_BASE_URL
   });
 
   const res = await api.post('/auth/login', {
