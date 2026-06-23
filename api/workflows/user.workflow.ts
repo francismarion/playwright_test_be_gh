@@ -23,4 +23,11 @@ export class UserWorkflow {
                 response
             }
         }
+
+    async getAllUser() {
+        const response = await this.userService.getAllUser()
+        expect(response.status()).toBe(200)
+
+        return response
+    }
 }

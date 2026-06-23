@@ -17,4 +17,10 @@ export class UserService {
                 }
             )
         }
+
+    getAllUser(headers?: Record<string, string>) {
+        return this.client.get(ENDPOINTS.GET_ALL_USER, {
+            headers
+        })
+    }
 }

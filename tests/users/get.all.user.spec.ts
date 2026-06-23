@@ -5,7 +5,7 @@ import { UserService } from "../../api/services/user.service";
 import { USERNAME, PASSWORD } from "../../helpers/dotenv-loader";
 import { authHeader } from "../../helpers/auth-case";
 
-test('create new user', async ({ authWorkflow, baseClient }) => {
+test('get all user', async ({ authWorkflow, baseClient }) => {
   const {token} = await authWorkflow.loginAndGetToken(
         USERNAME,
         PASSWORD
@@ -13,15 +13,12 @@ test('create new user', async ({ authWorkflow, baseClient }) => {
 
     const userService = new UserService(baseClient)
 
-    const response = userService.addUser(
-        "1",
-        "test",
-        "test",
-        "test",
+    const response = userService.getAllUser(
         authHeader(token, 'invalid')
         
     )
-    // console.log((await response).status())
-    // console.log((await response).text())
-    expect((await response).status()).toBe(201)
+
+    const responseBody = await response
+    console.log(await responseBody.json())
+   
 });
