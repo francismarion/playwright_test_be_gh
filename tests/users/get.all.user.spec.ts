@@ -19,6 +19,6 @@ test('get all user', async ({ authWorkflow, baseClient }) => {
     )
 
     const responseBody = await response
-    console.log(await responseBody.json())
+    // console.log(await responseBody.json())
    
 });

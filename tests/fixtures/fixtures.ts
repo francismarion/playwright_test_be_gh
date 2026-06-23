@@ -1,19 +1,29 @@
-import { test as base } from "@playwright/test";
+import { test as base, type APIRequestContext } from "@playwright/test";
 import { BaseClient } from "../../api/clients/base.client";
 import { AuthService } from "../../api/services/auth.service";
 import { AuthWorkflow } from "../../api/workflows/auth.workflow";
+import { UserService } from "../../api/services/user.service";
 import { Client } from "pg";
-import { USERNAME, PASSWORD } from "../../helpers/dotenv-loader"
+import { USERNAME, PASSWORD } from "../../helpers/dotenv-loader";
+
+export type CreatedUser = {
+  id: string;
+  username: string;
+  email: string;
+};
 
 type Fixtures = {
   baseClient: BaseClient;
   authWorkflow: AuthWorkflow;
   token: string;
   db: Client;
+
+  createUser: (data?: Partial<CreatedUser>) => Promise<CreatedUser>;
 };
 
 export const test = base.extend<Fixtures>({
-  baseClient: async ({ request }, use) => {
+
+  baseClient: async ({ request }: { request: APIRequestContext }, use) => {
     await use(new BaseClient(request));
   },
 
@@ -25,19 +35,34 @@ export const test = base.extend<Fixtures>({
   },
 
   token: async ({ authWorkflow }, use) => {
-  const username = process.env.USERNAME;
-  const password = process.env.PASSWORD;
+    const username = USERNAME;
+    const password = PASSWORD;
 
-  if (!username || !password) {
-    throw new Error("Missing credentials");
-  }
+    if (!username || !password) {
+      throw new Error("Missing credentials");
+    }
 
-  const { token } = await authWorkflow.loginAndGetToken(
-    username,
-    password
-  );
+    const { token } = await authWorkflow.loginAndGetToken(username, password);
 
-  await use(token);
+    await use(token);
+  },
+
+  createUser: async ({ baseClient }, use) => {
+  const userService = new UserService(baseClient);
+
+  const create = async (data?: any) => {
+    const response = await userService.addUser({
+      username: data?.username ?? `test_${Date.now()}`,
+      email: data?.email ?? "test@mail.com",
+      password: "123456",
+    });
+
+    const body = await response.json();
+
+    return body;
+  };
+
+  await use(create);
 },
 
   db: async ({}, use) => {
@@ -54,5 +79,5 @@ export const test = base.extend<Fixtures>({
     await use(client);
 
     await client.end();
-  }
+  },
 });
