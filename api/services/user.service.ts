@@ -1,3 +1,4 @@
+import { userInfo } from "node:os";
 import { BaseClient } from "../clients/base.client";
 import { ENDPOINTS } from "../routes/endpoints";
 
@@ -34,5 +35,22 @@ export class UserService {
     return this.client.get(ENDPOINTS.GET_SINGLE_USER(id), {
       headers,
     });
+  }
+
+  updateUser(params : {
+    idParam: string, id:string, username: string, password: string, email: string, headers?: Record<string, string>
+  }) {
+    const {idParam,id, username, password, email, headers} = params
+
+    return this.client.put(ENDPOINTS.UPDATE_USER(idParam), {
+      data : {
+        id,
+        username,
+        password,
+        email,
+      },
+      headers,
+      
+    }) 
   }
 }

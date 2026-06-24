@@ -37,4 +37,14 @@ export class UserWorkflow {
 
         return response
     }
+    
+    async updateUser(idParam: string, id: string, username: string, password: string, email: string) {
+        const response = await this.userService.updateUser({
+            idParam,
+            id,
+            username,
+            password,
+            email,
+    })
+    }
 }
