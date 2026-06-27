@@ -14,13 +14,13 @@ test('create new user', async ({ authWorkflow, baseClient }) => {
     const userService = new UserService(baseClient)
 
     const response = await userService.addUser({
-        id: crypto.randomUUID(),
         username:"test",
         password: "test",
         email: "test",
         headers: authHeader(token, 'invalid')
         
 })
+    console.log(await response.json())
     // console.log((await response).status())
     // console.log((await response).text())
     // expect((await response).status()).toBe(201)
