@@ -24,4 +24,18 @@ export class ProductService {
             headers
         });
     }
+
+    getAllProducts(params: {
+        title? : string,
+        headers?: Record<string, string>
+    }) {
+        const { title, headers } = params;
+
+        return this.client.get(ENDPOINTS.GET_ALL_PRODUCT, {
+            data : {
+                title
+            },
+            headers
+        });
+    }
 }

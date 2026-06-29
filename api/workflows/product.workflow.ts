@@ -27,4 +27,18 @@ export class ProductWorklow {
             response
         }
     }
+
+    async getAllProduct(
+        title: string
+    ) {
+       const response = await this.productService.getAllProducts({
+        title
+       }) 
+
+       expect(response.status()).toBe(200)
+       
+       return {
+            response
+       }
+    }
 }
