@@ -41,4 +41,31 @@ export class ProductWorklow {
             response
        }
     }
+
+    async updateProduct(
+        idParam : Number,
+        id : Number,
+        title : string,
+        price : Number,
+        description : string,
+        category : string,
+        image: string,
+    ) {
+        const response = await this.productService.updateProduct({
+            idParam,
+            id,
+            title,
+            price,
+            description,
+            category,
+            image
+        })
+
+        expect(response.status()).toBe(200)
+        console.log(response.text())
+
+        return {
+            response
+        }
+    }
 }

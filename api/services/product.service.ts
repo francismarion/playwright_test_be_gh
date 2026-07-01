@@ -38,4 +38,30 @@ export class ProductService {
             headers
         });
     }
+
+    updateProduct(params : {
+        idParam : Number,
+        id?: Number,
+        title: string,
+        price: Number;
+        description: string;
+        category: string;
+        image: string;
+        headers?: Record<string, string>
+    }) {
+        const {idParam, id, title, price, description, category, image, headers} = params
+
+        return this.client.put(ENDPOINTS.UPDATE_PRODUCT(idParam), {
+            data: {
+                idParam,
+                id,
+                title,
+                price,
+                description,
+                category,
+                image
+            },
+            headers
+        })
+    }
 }

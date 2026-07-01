@@ -6,6 +6,7 @@ export const ENDPOINTS = {
     UPDATE_USER : (id: string) =>`/users/${id}`,
     DELETE_USER : (id: string) =>  `/users/${id}`,
     ADD_PRODUCT : '/products',
-    GET_ALL_PRODUCT : '/products'
+    GET_ALL_PRODUCT : '/products',
+    UPDATE_PRODUCT : (id: Number) => `/products/${id}`
 
 }
